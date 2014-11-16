@@ -74,12 +74,12 @@ namespace SSJ4_Heimer
             
             
             Q = new Spell(SpellSlot.Q, 1000);
-            W = new Spell(SpellSlot.W, 300);
-            E = new Spell(SpellSlot.E, 350);
+            W = new Spell(SpellSlot.W, 1100);
+            E = new Spell(SpellSlot.E, 925);
             R = new Spell(SpellSlot.R, 525);
 
-            W.SetSkillshot(0.51f, 200, 902, true, SkillshotType.SkillshotLine);
-            E.SetSkillshot(0.51f, 120, 2500, true, SkillshotType.SkillshotLine);
+            W.SetSkillshot(250f, 200, 1400, true, SkillshotType.SkillshotLine);
+            E.SetSkillshot(0.51f, 120, 1200, false, SkillshotType.SkillshotCircle);
            
 
             SpellList.Add(Q);
