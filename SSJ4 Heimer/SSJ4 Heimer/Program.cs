@@ -13,8 +13,13 @@ using System.Threading;
 
 namespace SSJ4_Heimer
 {
+	
+	
 	internal class program
 	{
+		
+		
+		
 		private const string Champion = "Heimerdinger";
 		
 		private static Orbwalking.Orbwalker Orbwalker;
@@ -45,19 +50,29 @@ namespace SSJ4_Heimer
 
         private static Items.Item TYM;
 
-        private static Obj_AI_Hero Player;
+        //private static Obj_AI_Hero Player;
+        
+        
+        public static Obj_AI_Hero Player { get { return ObjectManager.Player; } }
+        
 
         static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
+            
         }
         
         
         static void Game_OnGameLoad(EventArgs args)
         {
-            Player = ObjectManager.Player;
-            if (ObjectManager.Player.BaseSkinName != Champion) return;
+            //Player = ObjectManager.Player;
+            
+            
+            
+        	if (ObjectManager.Player.BaseSkinName != Champion) return;
 
+            
+            
             Q = new Spell(SpellSlot.Q, 1000);
             W = new Spell(SpellSlot.W, 300);
             E = new Spell(SpellSlot.E, 350);
@@ -110,10 +125,10 @@ namespace SSJ4_Heimer
         
         private static void OnGameUpdate(EventArgs args)
         {
-            Player = ObjectManager.Player;
+            
 
 
-            Orbwalker.SetAttack(true);
+            
             if (Config.Item("ActiveCombo").GetValue<KeyBind>().Active)
             {
                 Combo();
@@ -126,33 +141,26 @@ namespace SSJ4_Heimer
         {
             var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Magical);
             if (target == null) return;
-
+			
             //Combo
-            if (Player.Distance(target) <= Q.Range && Q.IsReady() && (Config.Item("UseQCombo").GetValue<bool>()))
+            if (target.IsValidTarget(Q.Range) && Q.IsReady() && (Config.Item("UseQCombo").GetValue<bool>()))
             {
                 
                     Q.Cast(target);
 
             }
             if (W.IsReady() && (Player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 1) && (Config.Item("UseWCombo").GetValue<bool>()))
-                if (Player.ServerPosition.Distance(target.Position) < W.Range)
-                {
-                   
-                   W.Cast();
-                    
-                }
-            if (W.IsReady() && (Player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 2) && (Config.Item("UseWCombo").GetValue<bool>()))
-                if (Player.ServerPosition.Distance(target.Position) > W.Range)
-                {
-                    
-                    
-                        W.Cast();
-                    
-                }
-            if (Player.Distance(target) <= E.Range && E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
+                if (target.IsValidTarget(W.Range) && W.IsReady() && (Config.Item("UseWCombo").GetValue<bool>()))
+            {
+                
+                    W.Cast(target);
+
+            }
+            
+            if (target.IsValidTarget(E.Range) && E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
             {
                
-                    E.Cast();
+                    E.Cast(target);
                 
             }
             if (Config.Item("UseItems").GetValue<bool>())
@@ -189,27 +197,13 @@ namespace SSJ4_Heimer
             if (Config.Item("AutoR").GetValue<bool>())
             {
 
-                if (GetNumberHitByR(target) >= Config.Item("CountR").GetValue<Slider>().Value)
-                {
-                    R.Cast(target, Config.Item("Packet").GetValue<bool>());
-                }
+                
             }
 
 
         }
         
-        private static int GetNumberHitByR(Obj_AI_Base target) // Credits to Trelli For helping me with this one!
-        {
-            int totalHit = 0;
-            foreach (Obj_AI_Hero current in ObjectManager.Get<Obj_AI_Hero>())
-            {
-                if (current.IsEnemy && Vector3.Distance(Player.Position, current.Position) <= R.Range)
-                {
-                    totalHit = totalHit + 1;
-                }
-            }
-            return totalHit;
-        }
+        
         
         private static void OnDraw(EventArgs args) 
         {
