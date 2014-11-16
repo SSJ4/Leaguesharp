@@ -26,13 +26,9 @@ namespace SSJ4_Heimer
 		
 		private static List<Spell> SpellList = new List<Spell>();
 
-        private static Spell Q;
-
         private static Spell W;
 
         private static Spell E;
-
-        private static Spell R;
 
         private static Menu Config;
 
@@ -73,19 +69,19 @@ namespace SSJ4_Heimer
 
             
             
-            Q = new Spell(SpellSlot.Q, 1000);
+            
             W = new Spell(SpellSlot.W, 1100);
             E = new Spell(SpellSlot.E, 925);
-            R = new Spell(SpellSlot.R, 525);
+            
 
             W.SetSkillshot(250f, 200, 1400, true, SkillshotType.SkillshotLine);
             E.SetSkillshot(0.51f, 120, 1200, false, SkillshotType.SkillshotCircle);
            
 
-            SpellList.Add(Q);
+            
             SpellList.Add(W);
             SpellList.Add(E);
-            SpellList.Add(R);
+            
             
              RDO = new Items.Item(3143, 490f);
             HYD = new Items.Item(3074, 175f);
@@ -109,12 +105,9 @@ namespace SSJ4_Heimer
             
             //Combo Menu
             Config.AddSubMenu(new Menu("Combo", "Combo"));
-            Config.SubMenu("Combo").AddItem(new MenuItem("UseQCombo", "Use Q")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true);
-            Config.SubMenu("Combo").AddItem(new MenuItem("AutoR", "Auto R")).SetValue(true);
-            Config.SubMenu("Combo").AddItem(new MenuItem("CountR", "Num of Enemy in Range to Ult").SetValue(new Slider(1, 5, 0)));
             Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
             
             Config.AddToMainMenu();
@@ -139,29 +132,19 @@ namespace SSJ4_Heimer
         
         private static void Combo()
         {
-            var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Magical);
+            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
             if (target == null) return;
 			
             //Combo
-            if (target.IsValidTarget(Q.Range) && Q.IsReady() && (Config.Item("UseQCombo").GetValue<bool>()))
-            {
+            if (target.IsValidTarget(W.Range) && W.IsReady() && (Config.Item("UseWCombo").GetValue<bool>()))
                 
-                    Q.Cast(target);
-
-            }
-            if (W.IsReady() && (Player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 1) && (Config.Item("UseWCombo").GetValue<bool>()))
-                if (target.IsValidTarget(W.Range) && W.IsReady() && (Config.Item("UseWCombo").GetValue<bool>()))
             {
-                
                     W.Cast(target);
-
             }
             
             if (target.IsValidTarget(E.Range) && E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
             {
-               
                     E.Cast(target);
-                
             }
             if (Config.Item("UseItems").GetValue<bool>())
             {
@@ -194,11 +177,7 @@ namespace SSJ4_Heimer
                     TYM.Cast(target);
                 }
             }
-            if (Config.Item("AutoR").GetValue<bool>())
-            {
-
-                
-            }
+            
 
 
         }
@@ -209,12 +188,6 @@ namespace SSJ4_Heimer
         {
             if (Config.Item("CircleLag").GetValue<bool>()) // Credits to SKOBOL
             {
-                if (Config.Item("DrawQ").GetValue<bool>())
-                {
-                    Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White,
-                        Config.Item("CircleThickness").GetValue<Slider>().Value,
-                        Config.Item("CircleQuality").GetValue<Slider>().Value);
-                }
                 if (Config.Item("DrawW").GetValue<bool>())
                 {
                     Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White,
@@ -227,19 +200,9 @@ namespace SSJ4_Heimer
                         Config.Item("CircleThickness").GetValue<Slider>().Value,
                         Config.Item("CircleQuality").GetValue<Slider>().Value);
                 }
-                if (Config.Item("DrawR").GetValue<bool>())
-                {
-                    Utility.DrawCircle(ObjectManager.Player.Position, R.Range, System.Drawing.Color.White,
-                        Config.Item("CircleThickness").GetValue<Slider>().Value,
-                        Config.Item("CircleQuality").GetValue<Slider>().Value);
-                }
             }
             else
             {
-                if (Config.Item("DrawQ").GetValue<bool>())
-                {
-                    Drawing.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White);
-                }
                 if (Config.Item("DrawW").GetValue<bool>())
                 {
                     Drawing.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White);
@@ -247,10 +210,6 @@ namespace SSJ4_Heimer
                 if (Config.Item("DrawE").GetValue<bool>())
                 {
                     Drawing.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White);
-                }
-                if (Config.Item("DrawR").GetValue<bool>())
-                {
-                    Drawing.DrawCircle(ObjectManager.Player.Position, R.Range, System.Drawing.Color.White);
                 }
 
             }
