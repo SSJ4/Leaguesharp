@@ -73,7 +73,7 @@ namespace SSJ4_Heimer
 
             
             
-        	Q = new Spell(SpellSlot.Q, 450);
+        	Q = new Spell(SpellSlot.Q, 525);
             W = new Spell(SpellSlot.W, 1100);
             E = new Spell(SpellSlot.E, 925);
             R = new Spell(SpellSlot.R, 100);
@@ -117,7 +117,9 @@ namespace SSJ4_Heimer
             Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
-           
+            Config.SubMenu("Combo").AddItem(new MenuItem("posPrint", "Print position!").SetValue(new KeyBind(32, KeyBindType.Press)));
+            
+            
             //KS Menu
             Config.AddSubMenu(new Menu("KS Menu", "KSMenu"));
             Config.SubMenu("KSMenu").AddItem(new MenuItem("rwKS", "Use R->W for KS")).SetValue(true);
@@ -127,6 +129,10 @@ namespace SSJ4_Heimer
             //Safe Menu
             Config.AddSubMenu(new Menu("Safe me!", "SafeMenu"));
             Config.SubMenu("SafeMenu").AddItem(new MenuItem("ZhoUlt", "Zhonyas Turret Ult")).SetValue(true);
+            
+            //Turret spot drawings
+            Config.AddSubMenu(new Menu("Draw turret spots", "drawTur"));
+            Config.SubMenu("drawTur").AddItem(new MenuItem("drawSpots", "Draw turret spots")).SetValue(true);
             
             Config.AddToMainMenu();
 
@@ -165,7 +171,18 @@ namespace SSJ4_Heimer
            	ZhoUlt();
            }
            
+           if (Config.Item("posPrint").GetValue<KeyBind>().Active)
+           {
+           	var curPos = ObjectManager.Player.Position;
+           	
+           	Game.PrintChat(curPos.ToString());
+           }
+           
+           
+           
         }
+        
+        
         
         private static void ZhoUlt()
         {
@@ -173,9 +190,10 @@ namespace SSJ4_Heimer
         	var FullHP = ObjectManager.Player.MaxHealth;
         	var CritHP = FullHP / 100 * 20;
         	
-        	var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
+        	var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Magical);
             if (target == null) return;
         	
+            
         	
         	if (CurrHP <= CritHP)
         	{
@@ -397,32 +415,15 @@ namespace SSJ4_Heimer
         
         private static void OnDraw(EventArgs args) 
         {
-            if (Config.Item("CircleLag").GetValue<bool>()) // Credits to SKOBOL
+            
+            if (Config.Item("drawSpots").GetValue<bool>())
             {
-                if (Config.Item("DrawW").GetValue<bool>())
-                {
-                    Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White,
-                        Config.Item("CircleThickness").GetValue<Slider>().Value,
-                        Config.Item("CircleQuality").GetValue<Slider>().Value);
-                }
-                if (Config.Item("DrawE").GetValue<bool>())
-                {
-                    Utility.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White,
-                        Config.Item("CircleThickness").GetValue<Slider>().Value,
-                        Config.Item("CircleQuality").GetValue<Slider>().Value);
-                }
-            }
-            else
-            {
-                if (Config.Item("DrawW").GetValue<bool>())
-                {
-                    Drawing.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White);
-                }
-                if (Config.Item("DrawE").GetValue<bool>())
-                {
-                    Drawing.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White);
-                }
-
+            	Utility.DrawCircle(new Vector3(7456f, 7330f, 53.83824f), 100, Color.Aqua, 5, 30, false);
+        		Utility.DrawCircle(new Vector3(7252f, 7560f, 54.31723f), 100, Color.Aqua, 5, 30, false);
+        		Utility.DrawCircle(new Vector3(7694f, 7196f, 53.62105f), 100, Color.Aqua, 5, 30, false);
+        	
+        		
+        		
             }
         }
 		
