@@ -117,7 +117,7 @@ namespace SSJ4_Heimer
             Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
-            Config.SubMenu("Combo").AddItem(new MenuItem("DropQ", "Drop da Q").SetValue(new KeyBind(32, KeyBindType.Press)));
+           
             //KS Menu
             Config.AddSubMenu(new Menu("KS Menu", "KSMenu"));
             Config.SubMenu("KSMenu").AddItem(new MenuItem("rwKS", "Use R->W for KS")).SetValue(true);
@@ -136,13 +136,9 @@ namespace SSJ4_Heimer
         
         private static void OnGameUpdate(EventArgs args)
         {
-            
+        	
 
-
-        	if (Config.Item("DropQ").GetValue<KeyBind>().Active)
-        	    {
-        		Q.Cast(Player.Position);
-        	    }
+        	
         	
             if (Config.Item("ActiveCombo").GetValue<KeyBind>().Active)
             {
