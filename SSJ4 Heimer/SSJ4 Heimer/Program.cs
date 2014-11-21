@@ -18,8 +18,6 @@ namespace SSJ4_Heimer
 	internal class program
 	{
 		
-		
-		
 		private const string Champion = "Heimerdinger";
 		
 		private static Orbwalking.Orbwalker Orbwalker;
@@ -52,6 +50,8 @@ namespace SSJ4_Heimer
         
         private static Items.Item ZHO;
         
+        private static List<Vector3> WardSpots;
+        
         
         public static Obj_AI_Hero Player { get { return ObjectManager.Player; } }
         
@@ -65,9 +65,6 @@ namespace SSJ4_Heimer
         
         static void Game_OnGameLoad(EventArgs args)
         {
-            //Player = ObjectManager.Player;
-            
-            
             
         	if (ObjectManager.Player.BaseSkinName != Champion) return;
 
@@ -124,20 +121,33 @@ namespace SSJ4_Heimer
             Config.AddSubMenu(new Menu("KS Menu", "KSMenu"));
             Config.SubMenu("KSMenu").AddItem(new MenuItem("rwKS", "Use R->W for KS")).SetValue(true);
             Config.SubMenu("KSMenu").AddItem(new MenuItem("KSW", "Use W")).SetValue(true);
-            //Config.SubMenu("KSMenu").AddItem(new MenuItem("KSE", "Use E")).SetValue(true);
+            Config.SubMenu("KSMenu").AddItem(new MenuItem("KSE", "Use E")).SetValue(true);
             
             //Safe Menu
             Config.AddSubMenu(new Menu("Safe me!", "SafeMenu"));
             Config.SubMenu("SafeMenu").AddItem(new MenuItem("ZhoUlt", "Zhonyas Turret Ult")).SetValue(true);
             
             //Turret spot drawings
-            Config.AddSubMenu(new Menu("Draw turret spots", "drawTur"));
-            Config.SubMenu("drawTur").AddItem(new MenuItem("drawSpots", "Draw turret spots")).SetValue(true);
+            Config.AddSubMenu(new Menu("Turret Management", "drawTur"));
+            Config.SubMenu("drawTur").AddItem(new MenuItem("DrawSpots", "Draw turret spots")).SetValue(true);
+            Config.SubMenu("drawTur").AddItem(new MenuItem("TurOnSpot", "Place Turret on spot")).SetValue(new KeyBind(32, KeyBindType.Press));
+            
+            //Range Drawings
+            Config.AddSubMenu(new Menu("Drawings", "Drawings"));
+            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawEnable", "Enable Drawing"));
+            
+            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawQ", "Draw Q")).SetValue(true);
+            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawW", "Draw W")).SetValue(true);
+            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawE", "Draw E")).SetValue(true);
+            Config.SubMenu("Drawings").AddItem(new MenuItem("CircleLag", "Lag Free Circles").SetValue(true));
+            Config.SubMenu("Drawings").AddItem(new MenuItem("CircleQuality", "Circles Quality").SetValue(new Slider(100, 100, 10)));
+            Config.SubMenu("Drawings").AddItem(new MenuItem("CircleThickness", "Circles Thickness").SetValue(new Slider(1, 10, 1)));
             
             Config.AddToMainMenu();
 
             Game.OnGameUpdate += OnGameUpdate;
             Drawing.OnDraw += OnDraw;
+            
         }
         
         private static void OnGameUpdate(EventArgs args)
@@ -178,10 +188,20 @@ namespace SSJ4_Heimer
            	Game.PrintChat(curPos.ToString());
            }
            
+           TurretSpots();
+           
            
            
         }
         
+        public static void TurretSpots()
+        {
+        	WardSpots = new List<Vector3>();
+        	
+        	WardSpots.Add(new Vector3(7456f, 7330f, 53.83824f));
+        	WardSpots.Add(new Vector3(7252f, 7560f, 54.31723f));
+        	WardSpots.Add(new Vector3(7694f, 7196f, 53.62105f));
+        }
         
         
         private static void ZhoUlt()
@@ -303,6 +323,29 @@ namespace SSJ4_Heimer
             }
         }
         
+        private static void KSE()
+        {
+        	var target = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Magical);
+            if (target == null) return;
+            
+            var prediction = E.GetPrediction(target);
+            
+            if (W.IsReady())
+            {
+            	
+            	if (target.Health < GetEDamage(target))
+            		
+            
+            {
+            		if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 3)
+            	{
+            			Utility.DelayAction.Add(100, () => E.Cast(prediction.CastPosition));
+            	}
+            		
+                    
+            }
+            }
+        }
         
         private static void rwKSCombo()
         {
@@ -367,6 +410,26 @@ namespace SSJ4_Heimer
             return (float) damage;
         }
         
+        
+        private static float GetEDamage(Obj_AI_Base enemy)
+        {
+        	double damage = 0d;
+        	
+        	if (DFG.IsReady())
+                damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg)/1.2;
+        	
+        	if (E.IsReady())
+                damage += Player.GetSpellDamage(enemy, SpellSlot.W);
+        	
+        	if (DFG.IsReady())
+                damage = damage*1.2;
+        	
+        	
+            return (float) damage;
+        }
+        
+        
+        
         private static float GetRwDamage(Obj_AI_Base enemy)
         {
         	double damage = 0d;
@@ -410,22 +473,104 @@ namespace SSJ4_Heimer
 
             return (float) damage;
         }
-        
-        
-        
-        private static void OnDraw(EventArgs args) 
+
+
+
+        private static void OnDraw(EventArgs args)
         {
-            
-            if (Config.Item("drawSpots").GetValue<bool>())
-            {
-            	Utility.DrawCircle(new Vector3(7456f, 7330f, 53.83824f), 100, Color.Aqua, 5, 30, false);
-        		Utility.DrawCircle(new Vector3(7252f, 7560f, 54.31723f), 100, Color.Aqua, 5, 30, false);
-        		Utility.DrawCircle(new Vector3(7694f, 7196f, 53.62105f), 100, Color.Aqua, 5, 30, false);
         	
-        		
-        		
+        	
+			if (Config.Item("DrawSpots").GetValue<bool>())
+                {
+                	
+           
+                	 foreach (Vector3 wardPos in WardSpots)
+            {
+                	 	var MousePos = Game.CursorPos.Distance(wardPos);
+				 
+                if (ObjectManager.Player.Distance(wardPos) < 2000)
+                {
+                	if (MousePos < 100)
+                	{
+                    Utility.DrawCircle(wardPos, 100, Color.Red, 5, 5, false);
+                    
+                    if (Config.Item("TurOnSpot").GetValue<KeyBind>().Active)
+                    {
+                    	if (ObjectManager.Player.Position.Distance(wardPos) <= 525 && Q.IsReady())
+                    	{
+                    		Q.Cast(wardPos);
+                    	}
+                    	else
+                    	{
+                    		Player.IssueOrder(GameObjectOrder.MoveTo, wardPos);
+                    	}
+                    }
+                    
+                    
+                	}
+                	else
+                	{
+                		Utility.DrawCircle(wardPos, 100, Color.Aqua, 5, 5, false);
+                	}
+                	}
             }
+                	
+                	
+                	
+                }        	
+        	
+        	
+            #region Turretdraw
+            
+            #endregion
+            #region RangeDraw
+            if (Config.Item("DrawEnable").GetValue<bool>()) 
+            {
+                if (Config.Item("CircleLag").GetValue<bool>())
+                {
+                    if (Config.Item("DrawQ").GetValue<bool>())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White,
+                            Config.Item("CircleThickness").GetValue<Slider>().Value,
+                            Config.Item("CircleQuality").GetValue<Slider>().Value);
+                    }
+                    if (Config.Item("DrawW").GetValue<bool>())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White,
+                            Config.Item("CircleThickness").GetValue<Slider>().Value,
+                            Config.Item("CircleQuality").GetValue<Slider>().Value);
+                    }
+                    if (Config.Item("DrawE").GetValue<bool>())
+                    {
+                        Utility.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White,
+                            Config.Item("CircleThickness").GetValue<Slider>().Value,
+                            Config.Item("CircleQuality").GetValue<Slider>().Value);
+                    }
+                }
+                else
+                {
+                    if (Config.Item("DrawQ").GetValue<bool>())
+                    {
+                        Drawing.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White);
+                    }
+                    if (Config.Item("DrawW").GetValue<bool>())
+                    {
+                        Drawing.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White);
+                    }
+                    if (Config.Item("DrawE").GetValue<bool>())
+                    {
+                        Drawing.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White);
+                    }
+                }
+                
+                
+                
+                
+                
+            }
+            #endregion
         }
-		
+
+
 	}
 }
