@@ -419,7 +419,7 @@ namespace SSJ4_Heimer
                 damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg)/1.2;
         	
         	if (E.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.W);
+                damage += Player.GetSpellDamage(enemy, SpellSlot.E);
         	
         	if (DFG.IsReady())
                 damage = damage*1.2;
@@ -438,12 +438,12 @@ namespace SSJ4_Heimer
                 damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg)/1.2;
         	
         	if (W.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.W, 1)*2;
+                damage += Player.GetSpellDamage(enemy, SpellSlot.W, 1);
         	
         	if (DFG.IsReady())
                 damage = damage*1.2;
         	
-        	damage = damage*2;
+        	
             return (float) damage;
         }
         
