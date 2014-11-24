@@ -1,9 +1,0 @@
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\SSJ4 Heimer.exe.config
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\SSJ4 Heimer.exe
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\LeagueSharp.Common.dll
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\LeagueSharp.dll
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\SharpDX.dll
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\SharpDX.Direct3D9.dll
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\bin\Release\LeagueSharp.xml
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\obj\Release\SSJ4 Heimer.csprojResolveAssemblyReference.cache
-C:\Users\Do\Documents\SharpDevelop Projects\SSJ4 Heimer\SSJ4 Heimer\obj\Release\SSJ4 Heimer.exe
