@@ -1,0 +1,38 @@
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SSJ4 Heimerdinger.exe.config
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SSJ4 Heimerdinger.exe
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SSJ4 Heimerdinger.pdb
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\clipper_library.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\DevCommom.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\LeagueSharp.Common.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\LeagueSharp.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SharpDX.Direct3D9.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SharpDX.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SharpDX.Toolkit.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SharpDX.Toolkit.Graphics.dll
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\LeagueSharp.xml
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SharpDX.Toolkit.xml
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Release\SharpDX.Toolkit.Graphics.xml
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\obj\Release\SSJ4 Heimerdinger.exe
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\obj\Release\SSJ4 Heimerdinger.pdb
+c:\users\do\Favorites\Documents\Visual Studio 2013\Projects\SSJ4 Heimerdinger.exe.config
+c:\users\do\Favorites\Documents\Visual Studio 2013\Projects\SSJ4 Heimerdinger.exe
+c:\users\do\Favorites\Documents\Visual Studio 2013\Projects\SSJ4 Heimerdinger.pdb
+c:\users\do\Favorites\Documents\Visual Studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger.exe.config
+c:\users\do\Favorites\Documents\Visual Studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger.exe
+c:\users\do\Favorites\Documents\Visual Studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger.pdb
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\SSJ4 Heimerdinger.exe.config
+c:\users\do\documents\visual studio 2013\Projects\SSJ4 Heimerdinger.exe.config
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SSJ4 Heimerdinger.exe.config
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SSJ4 Heimerdinger.exe
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SSJ4 Heimerdinger.pdb
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\clipper_library.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\DevCommom.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\LeagueSharp.Common.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\LeagueSharp.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SharpDX.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SharpDX.Toolkit.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SharpDX.Toolkit.Graphics.dll
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\LeagueSharp.xml
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SharpDX.Toolkit.xml
+C:\Users\Do\Documents\visual studio 2013\Projects\SSJ4 Heimerdinger\SSJ4 Heimerdinger\bin\Debug\SharpDX.Toolkit.Graphics.xml
