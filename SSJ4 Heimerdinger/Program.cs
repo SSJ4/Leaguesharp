@@ -100,7 +100,7 @@ namespace SSJ4_Heimerdinger
 
             //Ts
             var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
-            SimpleTs.AddToMenu(targetSelectorMenu);
+            TargetSelector.AddToMenu(targetSelectorMenu);
             Config.AddSubMenu(targetSelectorMenu);
 
             //Orbwalk
@@ -208,9 +208,9 @@ namespace SSJ4_Heimerdinger
         {
             var CurrHP = ObjectManager.Player.Health;
             var FullHP = ObjectManager.Player.MaxHealth;
-            var CritHP = FullHP / 100 * 20;
+            var CritHP = FullHP / 100 * 25;
 
-            var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
 
@@ -234,7 +234,7 @@ namespace SSJ4_Heimerdinger
         {
 
 
-            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
             //var collisionObjects = LeagueSharp.Common.Collision.GetCollision(new List<Vector3> { predictedCastPosition }, new PredictionInput { Delay = 250f, Radius = 200, Speed = 1400 });
@@ -262,32 +262,32 @@ namespace SSJ4_Heimerdinger
 
 
             if (Config.Item("UseItems").GetValue<bool>())
-            {
-                if (Player.Distance(target) <= RDO.Range)
+            
+                if (Player.Distance3D(target) <= RDO.Range)
                 {
                     RDO.Cast(target);
                 }
-                if (Player.Distance(target) <= HYD.Range)
+                if (Player.Distance3D(target) <= HYD.Range)
                 {
                     HYD.Cast(target);
                 }
-                if (Player.Distance(target) <= DFG.Range)
+                if (Player.Distance3D(target) <= DFG.Range)
                 {
                     DFG.Cast(target);
                 }
-                if (Player.Distance(target) <= BOTK.Range)
+                if (Player.Distance3D(target) <= BOTK.Range)
                 {
                     BOTK.Cast(target);
                 }
-                if (Player.Distance(target) <= CUT.Range)
+                if (Player.Distance3D(target) <= CUT.Range)
                 {
                     CUT.Cast(target);
                 }
-                if (Player.Distance(target) <= 125f)
+                if (Player.Distance3D(target) <= 125f)
                 {
                     YOY.Cast();
                 }
-                if (Player.Distance(target) <= TYM.Range)
+                if (Player.Distance3D(target) <= TYM.Range)
                 {
                     TYM.Cast(target);
                 }
@@ -295,12 +295,12 @@ namespace SSJ4_Heimerdinger
 
 
 
-        }
+        
 
 
         private static void KSW()
         {
-            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
             var prediction = W.GetPrediction(target);
@@ -322,7 +322,7 @@ namespace SSJ4_Heimerdinger
 
         private static void KSE()
         {
-            var target = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
             var prediction = E.GetPrediction(target);
@@ -344,7 +344,7 @@ namespace SSJ4_Heimerdinger
 
         private static void rwKSCombo()
         {
-            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
             var prediction = W.GetPrediction(target);
@@ -368,7 +368,7 @@ namespace SSJ4_Heimerdinger
 
         private static void rECombo()
         {
-            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
             var prediction = E.GetPrediction(target);
