@@ -203,14 +203,6 @@ namespace SSJ4_Heimerdinger
                 return;
             }
 
-            if (target == null) return;
-            if (target.Health < GetE1Damage(target) && R.IsReady())
-            {
-                R.Cast();
-                Utility.DelayAction.Add(100, () => E.CastIfHitchanceEquals(target, HitChance.Medium, true));
-                E.CastIfHitchanceEquals(target, HitChance.High, true);
-                return;
-            }
 
             target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
             if (target == null) return;
@@ -276,16 +268,6 @@ namespace SSJ4_Heimerdinger
             return (float)damage * 2;
         }
 
-        private static float GetE1Damage(Obj_AI_Base enemy)
-        {
-            var target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
-            if (target == null) return (float)0;
-            double damage = 0d;
-
-            if (E1.IsReady() && R.IsReady())
-                damage += Player.GetSpellDamage(target, SpellSlot.E, 1);
-
-            return (float)damage * 2;
-        }
+        
     }
 }
