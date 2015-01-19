@@ -46,11 +46,11 @@ namespace SSJ4_Heimerdinger
             if (Player.BaseSkinName != Champion) return;
 
             Q = new Spell(SpellSlot.Q, 525);
-            W = new Spell(SpellSlot.W, 1100 - 100);
+            W = new Spell(SpellSlot.W, 1100);
             E = new Spell(SpellSlot.E, 925 - 100);
             R = new Spell(SpellSlot.R, 100);
 
-            W1 = new Spell(SpellSlot.W, 1100 - 100);
+            W1 = new Spell(SpellSlot.W, 1100);
             E1 = new Spell(SpellSlot.E, 925 - 100);
 
             Q.SetSkillshot(0.5f, 40f, 1100f, true, SkillshotType.SkillshotLine);
@@ -88,7 +88,7 @@ namespace SSJ4_Heimerdinger
             Config.SubMenu("Combo").AddItem(new MenuItem("ZhoUlt", "Ult + Q > Zhonyas")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
-            
+
             Config.AddToMainMenu();
 
             Game.OnGameUpdate += OnGameUpdate;
@@ -111,7 +111,7 @@ namespace SSJ4_Heimerdinger
             {
                 ZhoUlt();
             }
-           
+
 
         }
 
@@ -133,7 +133,7 @@ namespace SSJ4_Heimerdinger
             }
 
         }
-        
+
 
         private static void Combo()
         {
@@ -186,7 +186,15 @@ namespace SSJ4_Heimerdinger
                 var prediction = W.GetPrediction(target);
                 if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
                 {
+                    if (target.Health < GetW1Damage(target))
+                    {
+                        R.Cast();
+                        Utility.DelayAction.Add(200, () => W.Cast(prediction.CastPosition));
+                    }
+                    else
+                    {
                     W.Cast(prediction.CastPosition);
+                    }
                 }
                 
             }
@@ -225,8 +233,8 @@ namespace SSJ4_Heimerdinger
                 if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
                 {
                     R.Cast();
-                     Utility.DelayAction.Add(200, () => W.Cast(prediction.CastPosition));
-                     return;
+                    Utility.DelayAction.Add(200, () => W.Cast(prediction.CastPosition));
+                    return;
                 }
             }
 
@@ -268,6 +276,6 @@ namespace SSJ4_Heimerdinger
             return (float)damage * 2;
         }
 
-        
+
     }
 }
