@@ -1,1 +1,3 @@
 c:\users\do\documents\visual studio 2013\Projects\LS Template\LS Template\bin\Debug\LS Template.exe.config
+C:\Users\Do\Documents\GitHub\Leaguesharp\LS Template\LS Template\bin\Debug\LS Template.exe.config
+C:\Users\Do\Documents\GitHub\Leaguesharp\LS Template\LS Template\obj\Debug\LS Template.csprojResolveAssemblyReference.cache

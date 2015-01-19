@@ -50,7 +50,7 @@ namespace SF_Template
         {
 
             if (ObjectManager.Player.BaseSkinName != Champion) return; //If your champion name does not equals the champion you've defined at the top of the code
-                                                                       //Stop the code. If you want to make an Utility assembly, remove this line.
+            //Stop the code. If you want to make an Utility assembly, remove this line.
 
             Q = new Spell(SpellSlot.Q, Range_Of_Spell); //Making Q an actuall spell. You need to put the range of the spell here.
             W = new Spell(SpellSlot.W, Range_Of_Spell); //Making W an actuall spell. You need to put the range of the spell here.
@@ -58,7 +58,7 @@ namespace SF_Template
             R = new Spell(SpellSlot.R, Range_Of_Spell); //Making R an actuall spell. You need to put the range of the spell here
 
             //SetSkillshot(Distancef, Width, Speed, Collission, Skillshot Type); This will be used for Spell Prediction.
-            Q.SetSkillshot(0f, 0, 0, false, SkillshotType.SkillshotCone); 
+            Q.SetSkillshot(0f, 0, 0, false, SkillshotType.SkillshotCone);
             W.SetSkillshot(0f, 0, 0, false, SkillshotType.SkillshotLine);
             E.SetSkillshot(0f, 0, 0, false, SkillshotType.SkillshotCircle);
 
@@ -67,7 +67,7 @@ namespace SF_Template
             SpellList.Add(W);
             SpellList.Add(E);
             SpellList.Add(R);
-            
+
             //RDO = new Items.Item(ID_OF_ITEM, RANGE_OF_ITEM don't forget the "f" behind the number because this is a float);
             RDO = new Items.Item(3143, 490f);
 
@@ -77,7 +77,7 @@ namespace SF_Template
 
             //Ts nothing for you to do here
             var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
-            SimpleTs.AddToMenu(targetSelectorMenu);
+            TargetSelector.AddToMenu(targetSelectorMenu);
             Config.AddSubMenu(targetSelectorMenu);
 
             //Orbwalk nothing for you to do here
@@ -93,7 +93,7 @@ namespace SF_Template
             Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true);  //Adding an item to the submenu (toggle)
             Config.SubMenu("Combo").AddItem(new MenuItem("KSW", "KS with W")).SetValue(true);  //Adding an item to the submenu (toggle)
             Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));  //Adding an item to the submenu (on key down (hotkey))
-           
+
             //Range Drawings same concept as the Combo menu
             Config.AddSubMenu(new Menu("Drawings", "Drawings"));
             Config.SubMenu("Drawings").AddItem(new MenuItem("DrawEnable", "Enable Drawing"));
@@ -126,7 +126,7 @@ namespace SF_Template
             {
                 KSW(); //Execute KSW()
             }
-           
+
 
         }
 
@@ -134,7 +134,7 @@ namespace SF_Template
         {
 
 
-            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical); //Getting a target
+            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical); //Getting a target
             if (target == null) return; //If there is no target, return.
 
             //Combo
@@ -161,11 +161,11 @@ namespace SF_Template
 
             if (Config.Item("UseItems").GetValue<bool>()) //If the UseItems is toggled on then
             {
-                if (Player.Distance(target) <= RDO.Range) //If the distance of the target is lower then the RDO item range
+                if (Player.Distance3D(target) <= RDO.Range) //If the distance of the target is lower then the RDO item range
                 {
                     RDO.Cast(target); //Cast RDO
                 }
-                
+
             }
 
 
@@ -175,7 +175,7 @@ namespace SF_Template
 
         private static void KSW() //This is a Killsteal feature
         {
-            var target = SimpleTs.GetTarget(W.Range, SimpleTs.DamageType.Magical);
+            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
             var prediction = W.GetPrediction(target);
@@ -203,57 +203,17 @@ namespace SF_Template
             if (W.IsReady()) //Only calculate if W is 
                 damage += Player.GetSpellDamage(enemy, SpellSlot.W);
 
-            return (float)damage; //return damage of W back to the function of KS W
+            return (float)damage * 2; //return damage of W back to the function of KS W
         }
 
-        private static void OnDraw(EventArgs args)
-        {
-
-            if (Config.Item("DrawEnable").GetValue<bool>())
-            {
-                if (Config.Item("CircleLag").GetValue<bool>())
-                {
-                    if (Config.Item("DrawQ").GetValue<bool>())
-                    {
-                        Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White,
-                            Config.Item("CircleThickness").GetValue<Slider>().Value,
-                            Config.Item("CircleQuality").GetValue<Slider>().Value);
-                    }
-                    if (Config.Item("DrawW").GetValue<bool>())
-                    {
-                        Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White,
-                            Config.Item("CircleThickness").GetValue<Slider>().Value,
-                            Config.Item("CircleQuality").GetValue<Slider>().Value);
-                    }
-                    if (Config.Item("DrawE").GetValue<bool>())
-                    {
-                        Utility.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White,
-                            Config.Item("CircleThickness").GetValue<Slider>().Value,
-                            Config.Item("CircleQuality").GetValue<Slider>().Value);
-                    }
-                }
-                else
-                {
-                    if (Config.Item("DrawQ").GetValue<bool>())
-                    {
-                        Drawing.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White);
-                    }
-                    if (Config.Item("DrawW").GetValue<bool>())
-                    {
-                        Drawing.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White);
-                    }
-                    if (Config.Item("DrawE").GetValue<bool>())
-                    {
-                        Drawing.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White);
-                    }
-                }
 
 
 
 
 
-            }
-        }
+
+
+
 
 
     }
