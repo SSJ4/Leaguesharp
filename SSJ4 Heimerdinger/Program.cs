@@ -189,7 +189,8 @@ namespace SSJ4_Heimerdinger
                     if (target.Health < GetW1Damage(target))
                     {
                         R.Cast();
-                        Utility.DelayAction.Add(200, () => W.Cast(prediction.CastPosition));
+                        W.Cast(prediction.CastPosition);
+                        W.Cast(prediction.CastPosition);
                     }
                     else
                     {
@@ -233,7 +234,8 @@ namespace SSJ4_Heimerdinger
                 if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
                 {
                     R.Cast();
-                    Utility.DelayAction.Add(200, () => W.Cast(prediction.CastPosition));
+                    W.Cast(prediction.CastPosition);
+                    W.Cast(prediction.CastPosition);
                     return;
                 }
             }
