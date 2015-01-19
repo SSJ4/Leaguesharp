@@ -1,90 +1,64 @@
-﻿﻿#region
-using System;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
+using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
-using System.Collections.Generic;
 using System.Threading;
-#endregion
 
 namespace SSJ4_Heimerdinger
 {
-
-
-    internal class program
+    internal class Program
     {
-
         private const string Champion = "Heimerdinger";
-
         private static Orbwalking.Orbwalker Orbwalker;
-
         private static List<Spell> SpellList = new List<Spell>();
-
         private static Spell Q;
-
         private static Spell W;
-
         private static Spell E;
-
+        private static Spell Q1;
+        private static Spell W1;
+        private static Spell E1;
         private static Spell R;
-
         private static Menu Config;
-
         private static Items.Item RDO;
-
         private static Items.Item DFG;
-
         private static Items.Item YOY;
-
         private static Items.Item BOTK;
-
         private static Items.Item HYD;
-
         private static Items.Item CUT;
-
         private static Items.Item TYM;
-
         private static Items.Item ZHO;
-
-        private static List<Vector3> WardSpots;
-
+        private static List<Vector3> TurretSpots;
 
         public static Obj_AI_Hero Player { get { return ObjectManager.Player; } }
-
 
         static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
-
         }
-
 
         static void Game_OnGameLoad(EventArgs args)
         {
-
-            if (ObjectManager.Player.BaseSkinName != Champion) return;
-
-
+            if (Player.BaseSkinName != Champion) return;
 
             Q = new Spell(SpellSlot.Q, 525);
-            W = new Spell(SpellSlot.W, 1100);
-            E = new Spell(SpellSlot.E, 925);
+            W = new Spell(SpellSlot.W, 1100 - 100);
+            E = new Spell(SpellSlot.E, 925 - 100);
             R = new Spell(SpellSlot.R, 100);
 
+            W1 = new Spell(SpellSlot.W, 1100 - 100);
+            E1 = new Spell(SpellSlot.E, 925 - 100);
 
-            W.SetSkillshot(250f, 200, 1400, false, SkillshotType.SkillshotLine);
-            E.SetSkillshot(0.51f, 120, 1200, false, SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.5f, 40f, 1100f, true, SkillshotType.SkillshotLine);
 
-
-            SpellList.Add(Q);
-            SpellList.Add(W);
-            SpellList.Add(E);
-            SpellList.Add(R);
-
+            W.SetSkillshot(0.5f, 40f, 3000f, true, SkillshotType.SkillshotLine);
+            W1.SetSkillshot(0.5f, 40f, 3000f, true, SkillshotType.SkillshotLine);
+            E.SetSkillshot(0.5f, 120f, 1200f, false, SkillshotType.SkillshotCircle);
+            E1.SetSkillshot(0.5f, 120f, 1200f, false, SkillshotType.SkillshotCircle);
 
             RDO = new Items.Item(3143, 490f);
             HYD = new Items.Item(3074, 175f);
@@ -96,9 +70,9 @@ namespace SSJ4_Heimerdinger
             ZHO = new Items.Item(3157, 1f);
 
             //Menu
-            Config = new Menu(Champion, "SSJ4 Heimerdinger", true);
+            Config = new Menu(Champion, "SSJ4 Heimerdinger 2.0", true);
 
-            //Ts
+            //Targetselector
             var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
             TargetSelector.AddToMenu(targetSelectorMenu);
             Config.AddSubMenu(targetSelectorMenu);
@@ -107,162 +81,67 @@ namespace SSJ4_Heimerdinger
             Config.AddSubMenu(new Menu("Orbwalking", "Orbwalking"));
             Orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalking"));
 
-            //Combo Menu
             Config.AddSubMenu(new Menu("Combo", "Combo"));
             Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true);
-            Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
+            Config.SubMenu("Combo").AddItem(new MenuItem("KS", "Killsteal")).SetValue(true);
+            Config.SubMenu("Combo").AddItem(new MenuItem("ZhoUlt", "Ult + Q > Zhonyas")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true);
             Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
-            //Config.SubMenu("Combo").AddItem(new MenuItem("posPrint", "Print position!").SetValue(new KeyBind(32, KeyBindType.Press)));
-
-
-            //KS Menu
-            Config.AddSubMenu(new Menu("KS Menu", "KSMenu"));
-            Config.SubMenu("KSMenu").AddItem(new MenuItem("rwKS", "Use R->W for KS")).SetValue(true);
-            Config.SubMenu("KSMenu").AddItem(new MenuItem("KSW", "Use W")).SetValue(true);
-            Config.SubMenu("KSMenu").AddItem(new MenuItem("KSE", "Use E")).SetValue(true);
-
-            //Safe Menu
-            Config.AddSubMenu(new Menu("Safe me!", "SafeMenu"));
-            Config.SubMenu("SafeMenu").AddItem(new MenuItem("ZhoUlt", "Zhonyas Turret Ult")).SetValue(true);
-
-            //Turret spot drawings
-            Config.AddSubMenu(new Menu("Turret Management", "drawTur"));
-            Config.SubMenu("drawTur").AddItem(new MenuItem("DrawSpots", "Draw turret spots")).SetValue(true);
-            Config.SubMenu("drawTur").AddItem(new MenuItem("TurOnSpot", "Place Turret on spot")).SetValue(new KeyBind(32, KeyBindType.Press));
-
-            //Range Drawings
-            Config.AddSubMenu(new Menu("Drawings", "Drawings"));
-            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawEnable", "Enable Drawing"));
-
-            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawQ", "Draw Q")).SetValue(true);
-            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawW", "Draw W")).SetValue(true);
-            Config.SubMenu("Drawings").AddItem(new MenuItem("DrawE", "Draw E")).SetValue(true);
-            Config.SubMenu("Drawings").AddItem(new MenuItem("CircleLag", "Lag Free Circles").SetValue(true));
-            Config.SubMenu("Drawings").AddItem(new MenuItem("CircleQuality", "Circles Quality").SetValue(new Slider(100, 100, 10)));
-            Config.SubMenu("Drawings").AddItem(new MenuItem("CircleThickness", "Circles Thickness").SetValue(new Slider(1, 10, 1)));
-
+            
             Config.AddToMainMenu();
 
             Game.OnGameUpdate += OnGameUpdate;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
 
+            Game.PrintChat("Welcome to SSJ4 Heimerdinger 2.0");
         }
 
         private static void OnGameUpdate(EventArgs args)
         {
-
-
-
-
             if (Config.Item("ActiveCombo").GetValue<KeyBind>().Active)
             {
                 Combo();
             }
-
-            if (Config.Item("rwKS").GetValue<bool>())
+            if (Config.Item("KS").GetValue<bool>())
             {
-                rwKSCombo();
+                KS();
             }
-
-            //if (Config.Item("rE").GetValue<bool>())
-            //{
-            //	rECombo();
-            // }
-
-            if (Config.Item("KSW").GetValue<bool>())
-            {
-                KSW();
-            }
-
             if (Config.Item("ZhoUlt").GetValue<bool>())
             {
                 ZhoUlt();
             }
-
-            /*if (Config.Item("posPrint").GetValue<KeyBind>().Active)
-            {
-             var curPos = ObjectManager.Player.Position;
-           	
-             Game.PrintChat(curPos.ToString());
-            }*/
-
-            TurretSpots();
-
-
+           
 
         }
 
-        public static void TurretSpots()
-        {
-            WardSpots = new List<Vector3>();
-
-            WardSpots.Add(new Vector3(7456f, 7330f, 53.83824f));
-            WardSpots.Add(new Vector3(7252f, 7560f, 54.31723f));
-            WardSpots.Add(new Vector3(7694f, 7196f, 53.62105f));
-        }
 
 
         private static void ZhoUlt()
         {
-            var CurrHP = ObjectManager.Player.Health;
-            var FullHP = ObjectManager.Player.MaxHealth;
-            var CritHP = FullHP / 100 * 25;
-
-            var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (target == null) return;
-
-
-
-            if (CurrHP <= CritHP)
+            var fullHP = Player.MaxHealth;
+            var HP = Player.Health;
+            var critHP = fullHP / 4;
+            if (HP <= critHP)
             {
-
-                if (Q.IsReady() && R.IsReady())
-                {
-                    R.CastOnUnit(ObjectManager.Player);
-                    Utility.DelayAction.Add(100, () => Q.Cast(Player.Position));
-                    Utility.DelayAction.Add(500, () => ZHO.Cast(ObjectManager.Player));
-                }
-
+                var target = TargetSelector.GetTarget(1000, TargetSelector.DamageType.Magical);
+                if (target == null) return;
+                R.Cast();
+                Utility.DelayAction.Add(1010, () => Q.Cast(Player.Position));
+                Utility.DelayAction.Add(500, () => Q.Cast(Player.Position));
+                Utility.DelayAction.Add(100, () => ZHO.Cast());
             }
 
         }
-
+        
 
         private static void Combo()
         {
-
-
-            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
+            var target = TargetSelector.GetTarget(E.Range + 200, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
-            //var collisionObjects = LeagueSharp.Common.Collision.GetCollision(new List<Vector3> { predictedCastPosition }, new PredictionInput { Delay = 250f, Radius = 200, Speed = 1400 });
-
-
-
-            //Combo
-            if (W.IsReady() && (Config.Item("UseWCombo").GetValue<bool>()))
-            {
-                var prediction = W.GetPrediction(target);
-                if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
-                {
-                    W.Cast(prediction.CastPosition);
-
-                }
-            }
-            if (target.IsValidTarget(E.Range) && E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
-            {
-                E.Cast(target, true, true);
-            }
-
-
-
-
-
-
-            if (Config.Item("UseItems").GetValue<bool>())
-            
+             if (Config.Item("UseItems").GetValue<bool>())
+           
                 if (Player.Distance3D(target) <= RDO.Range)
                 {
                     RDO.Cast(target);
@@ -291,279 +170,122 @@ namespace SSJ4_Heimerdinger
                 {
                     TYM.Cast(target);
                 }
+            
+            
+            if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>())
+            {
+                E.CastIfHitchanceEquals(target, HitChance.Medium, true);
+                E.CastIfHitchanceEquals(target, HitChance.High, true);
             }
 
-
-
-        
-
-
-        private static void KSW()
-        {
-            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
+            target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
             if (target == null) return;
 
-            var prediction = W.GetPrediction(target);
-
-            if (W.IsReady())
+            if (W.IsReady() && Config.Item("UseWCombo").GetValue<bool>())
             {
-
-                if (target.Health < GetWDamage(target))
+                var prediction = W.GetPrediction(target);
+                if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
                 {
-                    if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 3)
-                    {
-                        Utility.DelayAction.Add(100, () => W.Cast(prediction.CastPosition));
-                    }
-
-
+                    W.Cast(prediction.CastPosition);
                 }
+                
             }
         }
 
-        private static void KSE()
+        private static void KS()
         {
-            var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
+            var target = TargetSelector.GetTarget(E.Range + 200, TargetSelector.DamageType.Magical);
             if (target == null) return;
-
-            var prediction = E.GetPrediction(target);
-
-            if (W.IsReady())
+            if (target.Health < GetEDamage(target))
             {
+                E.CastIfHitchanceEquals(target, HitChance.Medium, true);
+                E.CastIfHitchanceEquals(target, HitChance.High, true);
+                return;
+            }
 
-                if (target.Health < GetEDamage(target))
+            if (target == null) return;
+            if (target.Health < GetE1Damage(target) && R.IsReady())
+            {
+                R.Cast();
+                Utility.DelayAction.Add(100, () => E.CastIfHitchanceEquals(target, HitChance.Medium, true));
+                E.CastIfHitchanceEquals(target, HitChance.High, true);
+                return;
+            }
+
+            target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
+            if (target == null) return;
+            if (target.Health < GetWDamage(target))
+            {
+                var prediction = W.GetPrediction(target);
+                if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
                 {
-                    if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 3)
-                    {
-                        Utility.DelayAction.Add(100, () => E.Cast(prediction.CastPosition));
-                    }
 
-
+                    W.Cast(prediction.CastPosition);
+                    return;
                 }
             }
-        }
 
-        private static void rwKSCombo()
-        {
-            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
+            target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
             if (target == null) return;
-
-            var prediction = W.GetPrediction(target);
-
-            if (W.IsReady() && R.IsReady())
+            if (target.Health < GetW1Damage(target) && R.IsReady())
             {
-
-                if (target.Health < GetRwDamage(target))
+                var prediction = W.GetPrediction(target);
+                if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
                 {
-                    if (prediction.Hitchance >= HitChance.High && prediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 3)
-                    {
-                        R.CastOnUnit(ObjectManager.Player);
-
-                        Utility.DelayAction.Add(100, () => W.Cast(prediction.CastPosition));
-                    }
-
-
-                }
-            }
-        }
-
-        private static void rECombo()
-        {
-            var target = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
-            if (target == null) return;
-
-            var prediction = E.GetPrediction(target);
-
-            if (R.IsReady() && E.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()) && (Config.Item("UseECombo").GetValue<bool>()))
-            {
-
-                if (prediction.Hitchance >= HitChance.High && prediction.AoeTargetsHit.Count(h => h.IsEnemy && !h.IsDead) >= 2)
-                {
-                    R.CastOnUnit(ObjectManager.Player);
-                    Utility.DelayAction.Add(100, () => E.Cast(prediction.CastPosition));
+                    R.Cast();
+                     Utility.DelayAction.Add(200, () => W.Cast(prediction.CastPosition));
+                     return;
                 }
             }
 
         }
-
 
         private static float GetWDamage(Obj_AI_Base enemy)
         {
+            var target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
+            if (target == null) return (float)0;
             double damage = 0d;
 
-            if (DFG.IsReady())
-                damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg) / 1.2;
-
             if (W.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.W);
+                damage += Player.GetSpellDamage(target, SpellSlot.W);
 
-            if (DFG.IsReady())
-                damage = damage * 1.2;
-
-
-            return (float)damage;
+            return (float)damage * 2;
         }
 
+        private static float GetW1Damage(Obj_AI_Base enemy)
+        {
+            var target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
+            if (target == null) return (float)0;
+            double damage = 0d;
+
+            if (W1.IsReady() && R.IsReady())
+                damage += Player.GetSpellDamage(target, SpellSlot.W, 1);
+
+            return (float)damage * 2;
+        }
 
         private static float GetEDamage(Obj_AI_Base enemy)
         {
+            var target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
+            if (target == null) return (float)0;
             double damage = 0d;
-
-            if (DFG.IsReady())
-                damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg) / 1.2;
 
             if (E.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.E);
+                damage += Player.GetSpellDamage(target, SpellSlot.E);
 
-            if (DFG.IsReady())
-                damage = damage * 1.2;
-
-
-            return (float)damage;
+            return (float)damage * 2;
         }
 
-
-
-        private static float GetRwDamage(Obj_AI_Base enemy)
+        private static float GetE1Damage(Obj_AI_Base enemy)
         {
+            var target = TargetSelector.GetTarget(W.Range + 200, TargetSelector.DamageType.Magical);
+            if (target == null) return (float)0;
             double damage = 0d;
 
-            if (DFG.IsReady())
-                damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg) / 1.2;
+            if (E1.IsReady() && R.IsReady())
+                damage += Player.GetSpellDamage(target, SpellSlot.E, 1);
 
-            if (W.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.W, 1);
-
-            if (DFG.IsReady())
-                damage = damage * 1.2;
-
-
-            return (float)damage;
+            return (float)damage * 2;
         }
-
-        private static float GetComboDamage(Obj_AI_Base enemy)
-        {
-            double damage = 0d;
-
-            if (DFG.IsReady())
-                damage += Player.GetItemDamage(enemy, Damage.DamageItems.Dfg) / 1.2;
-
-            if (Q.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.Q) + Player.GetSpellDamage(enemy, SpellSlot.Q, 1);
-
-            if (W.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.W);
-
-            if (E.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.E);
-
-            if (R.IsReady())
-                damage += Player.GetSpellDamage(enemy, SpellSlot.R) * 8;
-
-            if (DFG.IsReady())
-                damage = damage * 1.2;
-
-
-
-            return (float)damage;
-        }
-
-
-
-        private static void OnDraw(EventArgs args)
-        {
-
-
-            if (Config.Item("DrawSpots").GetValue<bool>())
-            {
-
-
-                foreach (Vector3 wardPos in WardSpots)
-                {
-                    var MousePos = Game.CursorPos.Distance(wardPos);
-
-                    if (ObjectManager.Player.Distance(wardPos) < 2000)
-                    {
-                        if (MousePos < 100)
-                        {
-                            Utility.DrawCircle(wardPos, 100, Color.Red, 5, 5, false);
-
-                            if (Config.Item("TurOnSpot").GetValue<KeyBind>().Active)
-                            {
-                                if (ObjectManager.Player.Position.Distance(wardPos) <= 525 && Q.IsReady())
-                                {
-                                    Q.Cast(wardPos);
-                                }
-                                else
-                                {
-                                    Player.IssueOrder(GameObjectOrder.MoveTo, wardPos);
-                                }
-                            }
-
-
-                        }
-                        else
-                        {
-                            Utility.DrawCircle(wardPos, 100, Color.Aqua, 5, 5, false);
-                        }
-                    }
-                }
-
-
-
-            }
-
-
-            #region Turretdraw
-
-            #endregion
-            #region RangeDraw
-            if (Config.Item("DrawEnable").GetValue<bool>())
-            {
-                if (Config.Item("CircleLag").GetValue<bool>())
-                {
-                    if (Config.Item("DrawQ").GetValue<bool>())
-                    {
-                        Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White,
-                            Config.Item("CircleThickness").GetValue<Slider>().Value,
-                            Config.Item("CircleQuality").GetValue<Slider>().Value);
-                    }
-                    if (Config.Item("DrawW").GetValue<bool>())
-                    {
-                        Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White,
-                            Config.Item("CircleThickness").GetValue<Slider>().Value,
-                            Config.Item("CircleQuality").GetValue<Slider>().Value);
-                    }
-                    if (Config.Item("DrawE").GetValue<bool>())
-                    {
-                        Utility.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White,
-                            Config.Item("CircleThickness").GetValue<Slider>().Value,
-                            Config.Item("CircleQuality").GetValue<Slider>().Value);
-                    }
-                }
-                else
-                {
-                    if (Config.Item("DrawQ").GetValue<bool>())
-                    {
-                        Drawing.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White);
-                    }
-                    if (Config.Item("DrawW").GetValue<bool>())
-                    {
-                        Drawing.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.White);
-                    }
-                    if (Config.Item("DrawE").GetValue<bool>())
-                    {
-                        Drawing.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.White);
-                    }
-                }
-
-
-
-
-
-            }
-            #endregion
-        }
-
-
     }
 }
