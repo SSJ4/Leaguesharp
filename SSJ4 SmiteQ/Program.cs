@@ -50,17 +50,24 @@ namespace SSJ4_SmiteQ
         private static void Game_OnGameLoad(EventArgs args)
         {
 
-            if (Player.BaseSkinName == "LeeSin")
+            
+             if (Player.BaseSkinName == "Amumu")
             {
-                Q = new Spell(SpellSlot.Q, 1100);
-                Q.SetSkillshot(0.5f, 60f, 1500f, true, SkillshotType.SkillshotLine);
-                Champ = "LeeSin";
+                Q = new Spell(SpellSlot.Q, 25000);
+                Q.SetSkillshot(0.5f, 80f, 2000f, true, SkillshotType.SkillshotLine);
+                Champ = "Amumu";
             }
             else if (Player.BaseSkinName == "Blitzcrank")
             {
                 Q = new Spell(SpellSlot.Q, 1000);
                 Q.SetSkillshot(0.5f, 70f, 1800f, true, SkillshotType.SkillshotLine);
                 Champ = "Blitzcrank";
+            }
+            else if (Player.BaseSkinName == "LeeSin")
+            {
+                Q = new Spell(SpellSlot.Q, 1100);
+                Q.SetSkillshot(0.5f, 60f, 1500f, true, SkillshotType.SkillshotLine);
+                Champ = "LeeSin";
             }
             else
             {
