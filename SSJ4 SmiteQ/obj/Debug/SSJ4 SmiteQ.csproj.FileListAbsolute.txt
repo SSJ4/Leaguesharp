@@ -1,0 +1,12 @@
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\SSJ4 SmiteQ.exe.config
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\SSJ4 SmiteQ.exe
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\SSJ4 SmiteQ.pdb
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\clipper_library.dll
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\LeagueSharp.Common.dll
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\LeagueSharp.dll
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\SharpDX.dll
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\SharpDX.Direct3D9.dll
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\LeagueSharp.Sandbox.dll
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\LeagueSharp.xml
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\obj\Debug\SSJ4 SmiteQ.exe
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\obj\Debug\SSJ4 SmiteQ.pdb

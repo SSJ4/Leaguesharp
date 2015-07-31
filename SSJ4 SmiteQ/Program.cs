@@ -16,7 +16,7 @@ namespace SSJ4_SmiteQ
 
     internal class Program
     {
-        private const string Champion = "LeeSin";
+
 
         private static List<Spell> SpellList = new List<Spell>();
 
@@ -27,6 +27,8 @@ namespace SSJ4_SmiteQ
         private static Menu Config;
 
         public static double damage;
+
+        public static string Champ;
 
         private static int Plevel;
 
@@ -47,10 +49,24 @@ namespace SSJ4_SmiteQ
 
         private static void Game_OnGameLoad(EventArgs args)
         {
-            if (Player.BaseSkinName != Champion) return;
 
-            Q = new Spell(SpellSlot.Q, 1100);
-            Q.SetSkillshot(0.5f, 60f, 1500f, true, SkillshotType.SkillshotLine);
+            if (Player.BaseSkinName == "LeeSin")
+            {
+                Q = new Spell(SpellSlot.Q, 1100);
+                Q.SetSkillshot(0.5f, 60f, 1500f, true, SkillshotType.SkillshotLine);
+                Champ = "LeeSin";
+            }
+            else if (Player.BaseSkinName == "Blitzcrank")
+            {
+                Q = new Spell(SpellSlot.Q, 1000);
+                Q.SetSkillshot(0.5f, 70f, 1800f, true, SkillshotType.SkillshotLine);
+                Champ = "Blitzcrank";
+            }
+            else
+            {
+                return;
+            }
+
             smite = new Spell(Smite, 500);
 
             Config = new Menu("SSJ4 SmiteQ", "SSJ4 SmiteQ", true);
@@ -66,7 +82,7 @@ namespace SSJ4_SmiteQ
             Plevel = level;
             Game.OnUpdate += OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.PrintChat("SSJ4 SmiteQ loaded.");
+            Game.PrintChat("SSJ4 SmiteQ loaded. Champion selected: " + Champ);
         }
 
         private static void OnGameUpdate(EventArgs args)
