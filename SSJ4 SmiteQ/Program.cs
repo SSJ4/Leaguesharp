@@ -69,6 +69,12 @@ namespace SSJ4_SmiteQ
                 Q.SetSkillshot(0.5f, 60f, 1500f, true, SkillshotType.SkillshotLine);
                 Champ = "LeeSin";
             }
+             else if (Player.BaseSkinName == "Nidalee")
+             {
+                 Q = new Spell(SpellSlot.Q, 1500);
+                 Q.SetSkillshot(0.5f, 40f, 1300f, true, SkillshotType.SkillshotLine);
+                 Champ = "Nidalee";
+             }
             else
             {
                 return;

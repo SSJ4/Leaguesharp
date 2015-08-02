@@ -8,5 +8,6 @@ E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Re
 E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\SharpDX.Direct3D9.dll
 E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\LeagueSharp.Sandbox.dll
 E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\bin\Release\LeagueSharp.xml
+E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\obj\Debug\SSJ4 SmiteQ.csprojResolveAssemblyReference.cache
 E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\obj\Debug\SSJ4 SmiteQ.exe
 E:\Users\Do\documents\visual studio 2013\Projects\SSJ4 SmiteQ\SSJ4 SmiteQ\obj\Debug\SSJ4 SmiteQ.pdb
